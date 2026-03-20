@@ -63,8 +63,6 @@ public class Collezione {
                 .count();
     }
 
-
-    //da rifare
     public Gioco prezzomassimo() {
         return giochi.stream()
                 .max((g1, g2) -> Double.compare(g1.getPrezzo(), g2.getPrezzo()))
