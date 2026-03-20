@@ -1,25 +1,40 @@
 package org.example.esercizio;
 
-public class DaTavolo extends Gioco{
-    private int numeroGiocatori; // da 2 a 10
-    private int durataMediaPartita; // in minuti
+import org.example.exeption.ValoreNONvalido;
 
-    public DaTavolo(int id, String titolo, int annoPubblicazione, double prezzo, int numeroGiocatori, int durataMediaPartita) {
+public class DaTavolo extends Gioco {
+    private int numeroGiocatori;
+    private int durataMediaPartita;
+
+    public DaTavolo(int id, String titolo, int annoPubblicazione, double prezzo,
+                    int numeroGiocatori, int durataMediaPartita) {
         super(id, titolo, annoPubblicazione, prezzo);
-        this.numeroGiocatori=numeroGiocatori;
-        this.durataMediaPartita=durataMediaPartita;
+        setNumeroGiocatori(numeroGiocatori);
+        setDurataMediaPartita(durataMediaPartita);
     }
 
     public int getNumeroGiocatori() {
         return numeroGiocatori;
     }
+
+    public void setNumeroGiocatori(int numeroGiocatori) {
+        if (numeroGiocatori < 2 || numeroGiocatori > 10) {
+            throw new ValoreNONvalido("Numero giocatori non valido (2-10)");
+        }
+        this.numeroGiocatori = numeroGiocatori;
+    }
+
     public int getDurataMediaPartita() {
         return durataMediaPartita;
     }
 
+    public void setDurataMediaPartita(int durataMediaPartita) {
+        if (durataMediaPartita <= 0) {
+            throw new ValoreNONvalido("Durata partita non valida");
+        }
+        this.durataMediaPartita = durataMediaPartita;
+    }
 
-
-    //  devo mettere il messaggio di errore
     @Override
     public String toString() {
         return "GiocoDaTavolo{" +

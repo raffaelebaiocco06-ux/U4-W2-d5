@@ -1,7 +1,8 @@
 package org.example.esercizio;
 
 import java.util.*;
-
+import org.example.exeption.GiocoEsistente;
+import org.example.exeption.NotFound;
 
 public class Collezione {
   private List<Gioco> giochi;
@@ -13,14 +14,14 @@ public class Collezione {
     public boolean aggiungiG(Gioco gioco){
         boolean presente= giochi.stream().anyMatch(g-> g.getId() == gioco.getId());
         if(presente){
-            return false;
+            throw new GiocoEsistente("Errore: Il gioco con ID " + gioco.getId() + " è presente ");
         }else{
-            giochi.add(gioco);
-            return true;
+
+            return giochi.add(gioco);
         }
     }
     public Gioco ricercaperid(int id){
-        return giochi.stream().filter(g-> g.getId() == id).findAny().orElse(null);
+        return giochi.stream().filter(g-> g.getId() == id).findAny().orElseThrow(()-> new NotFound("Gioco con ID " + id + " non trovato"));
     }
     public List ricercaperprezzo(double prezzoinserito){
         return giochi.stream().filter(g-> g.getPrezzo() < prezzoinserito).toList();
@@ -30,7 +31,10 @@ public class Collezione {
         return giochi.stream().filter(g-> g instanceof DaTavolo).filter(t-> ((DaTavolo) t).getNumeroGiocatori()== numerogiocatori).toList();
     }
     public boolean rimuoviperid(int id){
-        return giochi.removeIf(g-> g.getId() == id);
+        if(giochi.removeIf(g-> g.getId() == id)) {
+            throw new NotFound("Impossibile rimuovere: gioco con ID " + id + " non trovato");
+        }
+        return true;
     }
 
     public boolean aggiornaid(int id, Gioco ng){
@@ -40,7 +44,8 @@ public class Collezione {
                 return true;
             }
         }
-        return false;
+        throw new NotFound("Impossibile aggiornare: gioco con ID " + id + " non trovato");
+
     }
 
 

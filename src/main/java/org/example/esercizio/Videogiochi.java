@@ -1,16 +1,18 @@
 package org.example.esercizio;
 
-public class Videogiochi extends Gioco{
+import org.example.exeption.ValoreNONvalido;
+
+public class Videogiochi extends Gioco {
     private String piattaforma;
-    private int durataGioco; // in ore
+    private int durataGioco;
     private Genere genere;
 
     public Videogiochi(int id, String titolo, int annoPubblicazione, double prezzo,
-                      String piattaforma, int durataGioco, Genere genere) {
+                       String piattaforma, int durataGioco, Genere genere) {
         super(id, titolo, annoPubblicazione, prezzo);
-        this.piattaforma = piattaforma;
-        this.durataGioco = durataGioco;
-        this.genere = genere;
+        setPiattaforma(piattaforma);
+        setDurataGioco(durataGioco);
+        setGenere(genere);
     }
 
     public String getPiattaforma() {
@@ -18,18 +20,34 @@ public class Videogiochi extends Gioco{
     }
 
     public void setPiattaforma(String piattaforma) {
+        if (piattaforma == null || piattaforma.isBlank()) {
+            throw new ValoreNONvalido("Piattaforma non valida");
+        }
         this.piattaforma = piattaforma;
     }
 
     public int getDurataGioco() {
         return durataGioco;
     }
+
+    public void setDurataGioco(int durataGioco) {
+        if (durataGioco < 0) {
+            throw new ValoreNONvalido("Durata gioco non valida");
+        }
+        this.durataGioco = durataGioco;
+    }
+
     public Genere getGenere() {
         return genere;
     }
 
+    public void setGenere(Genere genere) {
+        if (genere == null) {
+            throw new ValoreNONvalido("Genere non valido");
+        }
+        this.genere = genere;
+    }
 
-    //  devo mettere il messaggio di errore
     @Override
     public String toString() {
         return "Videogioco{" +
